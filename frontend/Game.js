@@ -95,7 +95,7 @@ function fire() {
       nextFire = game.time.now + fireRate;
       var bullet = bullets.getFirstDead();
       bullet.reset(aim.x, aim.y);
-			//~ bullet.alpha = 0;
+			bullet.alpha = 0;
       game.physics.arcade.moveToPointer(bullet, 300);
 	}
 }
@@ -107,11 +107,15 @@ function beforeCreate(argument) {
 };
 
 function onBulletHitAstroid (bullet, astroid) {
-	console.log('haha')
+	astroid.shot = true;
 	if (Requester.playerId == 0) {
-		game.add.tween(astroid).to( { x: 0 }, 3000, "Quart.easeOut").start();
+		game.add.tween(astroid).to( { x: 0 }, 4000, "Quart.easeOut").start();
+		astroid.body.gravity.y = 300;
+		astroid.body.velocity.y = -200;
 	} else {
-		game.add.tween(astroid).to( { x: 1000 }, 3000, "Quart.easeOut").start();
+		game.add.tween(astroid).to( { x: 1000 }, 4000, "Quart.easeOut").start();
+		astroid.body.gravity.y = 300;
+		astroid.body.velocity.y = -200;
 	}
 };
 
