@@ -9,11 +9,13 @@ function preload() {
     game.load.image('background', 'assets/background.png');
     game.load.image('planet', 'assets/planet.png');
     game.load.image('astroid', 'assets/astroid.png');
+    game.load.image('aim', 'assets/aim.png');
 }
 
 var planets;
 var astroids;
 var aims;
+var aim1;
 
 function create() {
 
@@ -26,11 +28,12 @@ function create() {
     //  The planets group contains the planets (at least two)
     planets = game.add.group();
     planets.enableBody = true;
-    var planet = planets.create(100, 300, 'planet');
-    var planet = planets.create(800, 300, 'planet');
+    var planet1 = planets.create(100, 300, 'planet');
+		console.log(planet1)
+    aim1 = game.add.sprite(planet1.x + (planet1.width/2), planet1.y + (planet1.height/2), 'aim');
+		aim1.anchor.setTo(0.5, 0.5);
 
-    // The player and its settings
-    //~ aim = game.add.sprite(32, game.world.height - 150, 'dude');
+    var planet2 = planets.create(800, 300, 'planet');
 
     //  We need to enable physics on the player
     //~ game.physics.arcade.enable(player);
@@ -38,7 +41,7 @@ function create() {
 }
 
 function update() {
-
+		aim1.angle += 1;
     //  Collide the player and the stars with the platforms
     //~ game.physics.arcade.collide(player, platforms);
 
