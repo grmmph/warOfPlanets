@@ -106,7 +106,11 @@ function beforeCreate(argument) {
 
 function onBulletHitAstroid (bullet, astroid) {
 	console.log('haha')
-	game.add.tween(astroid).to( { x: 0 }, 3000, "Quart.easeOut").start();
+	if (Requester.playerId == 0) {
+		game.add.tween(astroid).to( { x: 0 }, 3000, "Quart.easeOut").start();
+	} else {
+		game.add.tween(astroid).to( { x: 1000 }, 3000, "Quart.easeOut").start();
+	}
 };
 
 function onAstroidHitPlanets (astroid, planet) {
