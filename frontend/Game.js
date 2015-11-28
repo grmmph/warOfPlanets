@@ -99,9 +99,9 @@ function add_note_to_astroid(astroid_group) {
 	var astroid_sound = ['astroid_sound1', 'astroid_sound2', 'astroid_sound3', 'astroid_sound4', 'astroid_sound5', 'astroid_sound6', 'astroid_sound7', 'astroid_sound8', 'astroid_sound9', 'astroid_sound10', 'astroid_sound11', 'astroid_sound12']
 	
 	for (var i = 0, len = astroid_group.children.length; i < len; i++) {
-		note = game.add.audio(astroid_sound[i]);
-		note.loop = true;
-		note.play();	
+		astroid_group.children[i].note = game.add.audio(astroid_sound[i]);
+		astroid_group.children[i].note.loop = true;
+		astroid_group.children[i].note.play();	
 	}
 }
 
@@ -140,6 +140,7 @@ function beforeCreate(argument) {
 
 function onBulletHitAstroid (bullet, astroid) {
 	astroid.shot = true;
+	astroid.note.stop();
 	if (Requester.playerId == 0) {
 		game.add.tween(astroid).to( { x: 0 }, 4000, "Quart.easeOut").start();
 		astroid.body.gravity.y = 300;
