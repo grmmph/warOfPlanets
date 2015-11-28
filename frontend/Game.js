@@ -29,6 +29,7 @@ function preload() {
     game.load.image('astroid', 'assets/astroid_small.png');
 		game.load.image('bullet', 'assets/bullet.png');
 		game.load.spritesheet('explosion', 'assets/explosion.png', 100, 100);
+		game.load.audio('drone', 'assets/music/DRONE.mp3');
 };
 
 function createPlanet() {
@@ -130,7 +131,8 @@ function onAstroidHitPlanets (astroid, planet) {
 function create() {
     //  We're going to be using physics, so enable the Arcade Physics system
     game.physics.startSystem(Phaser.Physics.ARCADE);
-
+		drone = game.add.audio('drone');
+		drone.play();
     //  A simple background for our game
     var background = game.add.tileSprite(0, 0, gameSize[0], gameSize[1], "background");
 		createPlanet();
