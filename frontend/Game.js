@@ -19,7 +19,7 @@ var p2_astroids = {};
 var aim;
 var fireRate = 100;
 var nextFire = 0;
-
+var explosions;
 
 function preload() {
     game.load.image('background', 'assets/background.png');
@@ -28,6 +28,7 @@ function preload() {
     game.load.image('aim', 'assets/aim.png');
     game.load.image('astroid', 'assets/astroid_small.png');
 		game.load.image('bullet', 'assets/bullet.png');
+		game.load.spritesheet('explosion', 'assets/explosion.png', 100, 100);
 };
 
 function createPlanet() {
@@ -35,6 +36,7 @@ function createPlanet() {
 	planets.enableBody = true;
 	planet1 = planets.create(planet1x, planet1y, 'planet1');
 	planet2 = planets.create(planet2x, planet2y, 'planet2');
+
 	if (Requester.playerId == 0) {
 		userPlanet = planet1;
 	} else if (Requester.playerId == 1) {
@@ -79,6 +81,16 @@ function onBulletHitAstroid (bullet, astroid) {
 	game.add.tween(astroid).to( { x: 0 }, 3000, "Quart.easeOut").start();
 };
 
+function onAstroidHitPlanets (astroid, planet) {
+	astroid.kill();
+	var boom = game.add.sprite(astroid.x, astroid.y, 'explosion');
+	var explosion = boom.animations.add('explosion');
+	boom.animations.play('explosion', 30, true);
+	setTimeout(function () {
+		boom.kill()
+	},300)
+};
+
 function create() {
     //  We're going to be using physics, so enable the Arcade Physics system
     game.physics.startSystem(Phaser.Physics.ARCADE);
@@ -96,10 +108,6 @@ function create() {
     bullets.createMultiple(50, 'bullet');
     bullets.setAll('checkWorldBounds', true);
     bullets.setAll('outOfBoundsKill', true);
-
-    //  The planets group contains the planets (at least two)
-    planets = game.add.group();
-    planets.enableBody = true;
 
     //  The astroids group contains the planets (at least two)
     p1_astroids = game.add.group();
@@ -148,5 +156,6 @@ function update() {
 	}
 
 	game.physics.arcade.overlap(bullets, userAstroids, onBulletHitAstroid, null, this);
+	game.physics.arcade.overlap(userAstroids, planets, onAstroidHitPlanets, null, this);
 
 }
