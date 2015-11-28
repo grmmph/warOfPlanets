@@ -98,25 +98,19 @@ function create() {
 
     //  The astroids group contains the planets (at least two)
     p1_astroids = game.add.group();
-    p1_astroids.enableBody = true;
+    //~ p1_astroids.enableBody = true;
     
     var distance_astroids = (2*radius)/astroid_init_num - 8;
-    for (var i = 0; i < astroid_init_num; i++)
+    for (var i = 0; i < astroid_init_num*2; i++)
     {
         //  Create an random astroid
-        var ranpos_x = (Math.random()*distance_astroids << 0) + i*(distance_astroids+8) - radius;
-        pos_y = Math.floor( Math.sqrt( radius*radius - ranpos_x*ranpos_x ) );
+        var ranpos = Math.random()*360 << 0;
+        pos_x = Math.floor(Math.cos(ranpos) * radius);
+        pos_y = Math.floor(Math.sin(ranpos) * radius);
 
-        var astroid = p1_astroids.create(planet1x + astroid_perimeter + ranpos_x,planet1y + 35 + pos_y, 'astroid');
-    }
-    
-    for (var i = 0; i < astroid_init_num; i++)
-    {
-        //  Create an random astroid
-        var ranpos_x = (Math.random()*distance_astroids << 0) + i*(distance_astroids+8) - radius;
-        pos_y = Math.floor( Math.sqrt( radius*radius - ranpos_x*ranpos_x ) );
-
-        var astroid = p1_astroids.create(planet1x + astroid_perimeter + ranpos_x,planet1y + 35 - pos_y, 'astroid');
+        var astroid = p1_astroids.create(planet1x + astroid_perimeter + pos_x,planet1y + 35 + pos_y, 'astroid');
+        astroid.pos = ranpos;
+        astroid.shot = false;
     }
 
 };
@@ -128,6 +122,17 @@ function update() {
 	aim.rotation = game.physics.arcade.angleToPointer(aim);
 	if (game.input.activePointer.isDown) {
 			fire();
+	}
+	
+	for (var i = 0, len = p1_astroids.children.length; i < len; i++) {
+			if (!p1_astroids.children[i].shot) {
+				p1_astroids.children[i].pos = p1_astroids.children[i].pos + 0.03	;
+				pos_x = Math.floor(Math.cos(p1_astroids.children[i].pos) * radius);
+				pos_y = Math.floor(Math.sin(p1_astroids.children[i].pos) * radius);
+      
+				p1_astroids.children[i].x = planet1x + astroid_perimeter + pos_x;
+				p1_astroids.children[i].y = planet1y + 35 + pos_y;
+			}
 	}
 
 }
