@@ -140,6 +140,8 @@ function create() {
     //  The astroids group contains the planets (at least two)
     p1_astroids = game.add.group();
     p2_astroids = game.add.group();
+		p2_astroids.enableBody = true;
+		p1_astroids.enableBody = true;
 
 
     var distance_astroids = (2*radius)/astroid_init_num - 8;
@@ -164,8 +166,8 @@ function update() {
 	}
 
 	// rotate astroids
-	// rotate_astroids(p1_astroids, planet1x, planet1y + 35);
-	// rotate_astroids(p2_astroids, planet2x, planet2y + 35);
+	rotate_astroids(p1_astroids, planet1x, planet1y + 35);
+	rotate_astroids(p2_astroids, planet2x, planet2y + 35);
 	game.physics.arcade.overlap(bullets, userAstroids, onBulletHitAstroid, null, this);
 	game.physics.arcade.overlap(userAstroids, planets, onAstroidHitPlanets, null, this);
 
