@@ -20,7 +20,10 @@ var aim;
 var fireRate = 100;
 var nextFire = 0;
 var explosions;
-
+var score = {
+		you: 0,
+		him: 0
+}
 function preload() {
     game.load.image('background', 'assets/background.png');
     game.load.image('planet1', 'assets/planet1.png');
@@ -28,7 +31,7 @@ function preload() {
     game.load.image('aim', 'assets/aim.png');
     game.load.image('astroid', 'assets/astroid_small.png');
 		game.load.image('bullet', 'assets/bullet.png');
-		game.load.spritesheet('explosion', 'assets/explosion.png', 100, 100);
+		game.load.spritesheet('explosion', 'assets/explosion.png', 100, 100, 18);
 		game.load.audio('drone', 'assets/music/DRONE.mp3');
 		game.load.audio('boom', 'assets/music/boom.mp3');
 };
@@ -122,6 +125,9 @@ function onBulletHitAstroid (bullet, astroid) {
 function onAstroidHitPlanets (astroid, planet) {
 	Requester.astroidHit();
 	astroid.kill();
+	score.you ++;
+	document.getElementById('you').innerHTML = score.you;
+
 	var boom = game.add.sprite(astroid.x, astroid.y, 'explosion');
 	var explosion = boom.animations.add('explosion');
 	boom.animations.play('explosion', 30, true);
@@ -133,6 +139,9 @@ function onAstroidHitPlanets (astroid, planet) {
 };
 
 Requester.onHitUser = function () {
+	console.log('you got hit!')
+	score.him ++;
+	document.getElementById('him').innerHTML = score.him;
 	var boom = game.add.sprite(userPlanet.x+30, userPlanet.y, 'explosion');
 	var explosion = boom.animations.add('explosion');
 	boom.animations.play('explosion', 30, true);

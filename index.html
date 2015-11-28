@@ -8,13 +8,26 @@
 	<script src="/socket.io/socket.io.js" type="text/javascript"></script>
 	<script type="text/javascript" src="frontend/Requester.js"></script>
 	<script type="text/javascript" src="frontend/Game.js"></script>
+	<link href='https://fonts.googleapis.com/css?family=Press+Start+2P' rel='stylesheet' type='text/css'>
     <style type="text/css">
         body {
             margin: 0;
         }
+				.score {
+					color: white;
+					position: absolute;
+					top: 20px;
+					font-family: 'Press Start 2P', cursive;
+					line-height: 40px;
+					left: 20px;
+					font-size: 30px;
+				}
     </style>
 </head>
 <body>
-
+<div class="score">
+	Good guys(you): <span id="you">0</span><br>
+	Bad guys(him): <span id="him">0</span>
+</div>
 </body>
 </html>

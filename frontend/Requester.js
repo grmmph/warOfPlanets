@@ -25,6 +25,7 @@ var Requester = {
     };
     socket.emit('astroid-hit', opponent);
   },
+
   onAstroidHit: function (player) {
     if (player === Requester.playerId) {
       Requester.onHitUser();
