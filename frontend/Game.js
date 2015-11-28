@@ -5,7 +5,7 @@ var planet1y = 300;
 var planet2x = 100;
 var planet2y = 300;
 var astroid_perimeter = 30;
-var astroid_init_num = 6; 
+var astroid_init_num = 6;
 
 var gameSize = [1000, 800];
 var game = new Phaser.Game(gameSize[0], gameSize[1], Phaser.AUTO, '', { preload: preload, create: beforeCreate, update: update });
@@ -14,8 +14,8 @@ var planets;
 var planet1;
 var planet2;
 var userPlanet;
-var p1_astroids;
-var p2_astroids;
+var p1_astroids = {};
+var p2_astroids = {};
 var aim;
 var fireRate = 100;
 var nextFire = 0;
@@ -61,17 +61,22 @@ function createAim() {
 
 function fire() {
 	if (game.time.now > nextFire && bullets.countDead() > 0) {
-	        nextFire = game.time.now + fireRate;
-	        var bullet = bullets.getFirstDead();
-	        bullet.reset(aim.x, aim.y);
-	        game.physics.arcade.moveToPointer(bullet, 300);
-	    }
+      nextFire = game.time.now + fireRate;
+      var bullet = bullets.getFirstDead();
+      bullet.reset(aim.x, aim.y);
+			bullet.alpha = 0;
+      game.physics.arcade.moveToPointer(bullet, 300);
+	}
 }
 
 function beforeCreate(argument) {
 	Requester.signIn(function () {
 		create();
 	});
+};
+
+function onBulletHitAstroid (bullet, astroid) {
+	game.add.tween(astroid).to( { x: 0 }, 3000, "Quart.easeOut").start();
 };
 
 function create() {
@@ -98,8 +103,8 @@ function create() {
 
     //  The astroids group contains the planets (at least two)
     p1_astroids = game.add.group();
-    //~ p1_astroids.enableBody = true;
-    
+
+
     var distance_astroids = (2*radius)/astroid_init_num - 8;
     for (var i = 0; i < astroid_init_num*2; i++)
     {
@@ -112,6 +117,12 @@ function create() {
         astroid.pos = ranpos;
         astroid.shot = false;
     }
+
+		if (Requester.playerId == 0) {
+			userAstroids = p1_astroids;
+		} else {
+			userAstroids = p2_astroids;
+		}
 
 };
 
@@ -134,5 +145,7 @@ function update() {
 				p1_astroids.children[i].y = planet1y + 35 + pos_y;
 			}
 	}
+
+	game.physics.arcade.overlap(bullets, userAstroids, onBulletHitAstroid, null, this);
 
 }
