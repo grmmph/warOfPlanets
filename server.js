@@ -21,8 +21,8 @@ io.sockets.on('connection', function(socket) {
     io.sockets.connected[socket.id].emit('player-id', id);
   });
 
-  socket.on('shoot', function (bulletObject) {
-    socket.emit('bullet-change', id, bulletObject);
+  socket.on('astroid-hit', function (astroid) {
+    io.sockets.emit('astroid-hit', astroid);
   });
 
   socket.on('disconnect', function () {

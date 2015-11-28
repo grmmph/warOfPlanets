@@ -15,10 +15,20 @@ var Requester = {
         callback();
       }
     });
-    socket.on('bullet-change', this.onShoot);
+    socket.on('astroid-hit', this.onAstroidHit);
   },
 
-  astroidHit: function () {
-    socket.emit('shoot');
-  }
+  astroidHit: function (astroid) {
+    var opponent = 0;
+    if (this.playerId == 0) {
+      opponent = 1;
+    };
+    socket.emit('astroid-hit', opponent);
+  },
+
+  onAstroidHit: function (player) {
+    if (player === Requester.playerId) {
+      Requester.onHitUser();
+    }
+  },
 }
