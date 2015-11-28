@@ -10,6 +10,8 @@ var gameSize = [1000, 800];
 var game = new Phaser.Game(gameSize[0], gameSize[1], Phaser.AUTO, '', { preload: preload, create: create, update: update });
 var playerId;
 var planets;
+var planet1;
+var planet2;
 var p1_astroids;
 var p2_astroids;
 var aim1;
@@ -38,8 +40,10 @@ function create() {
     //  The planets group contains the planets (at least two)
     planets = game.add.group();
     planets.enableBody = true;
+
     var planet1 = planets.create(planet1x, planet1y, 'planet1');
     var planet2 = planets.create(planet2x, planet1y, 'planet2');
+
 
     aim1 = game.add.sprite(planet1.x + (planet1.width/2), planet1.y + (planet1.height/2), 'aim');
 		aim1.anchor.setTo(0.5, 0.5);
@@ -63,10 +67,19 @@ function create() {
     //  We need to enable physics on the player
     //~ game.physics.arcade.enable(player);
 
+
+		//events
+		game.input.keyboard.onUpCallback = function( e ){
+        if(e.keyCode == Phaser.Keyboard.UP){
+            aim1.angle -= 1;
+        }
+				if(e.keyCode == Phaser.Keyboard.DOWN){
+            aim1.angle += 1;
+        }
+    };
 }
 
 function update() {
-		aim1.angle += 1;
     //  Collide the player and the stars with the platforms
     //~ game.physics.arcade.collide(player, platforms);
 
