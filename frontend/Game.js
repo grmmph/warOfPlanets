@@ -16,6 +16,9 @@ var userPlanet;
 var p1_astroids;
 var p2_astroids;
 var aim;
+var fireRate = 100;
+var nextFire = 0;
+
 
 function preload() {
     game.load.image('background', 'assets/background.png');
@@ -23,6 +26,7 @@ function preload() {
     game.load.image('planet2', 'assets/planet2.png');
     game.load.image('aim', 'assets/aim.png');
     game.load.image('astroid', 'assets/astroid_small.png');
+		game.load.image('bullet', 'assets/bullet.png');
 };
 
 function createPlanet() {
@@ -54,6 +58,15 @@ function createAim() {
 	};
 };
 
+function fire() {
+	if (game.time.now > nextFire && bullets.countDead() > 0) {
+	        nextFire = game.time.now + fireRate;
+	        var bullet = bullets.getFirstDead();
+	        bullet.reset(aim.x, aim.y);
+	        game.physics.arcade.moveToPointer(bullet, 300);
+	    }
+}
+
 function beforeCreate(argument) {
 	Requester.signIn(function () {
 		create();
@@ -68,6 +81,15 @@ function create() {
     var background = game.add.tileSprite(0, 0, gameSize[0], gameSize[1], "background");
 		createPlanet();
 		createAim();
+
+
+		bullets = game.add.group();
+    bullets.enableBody = true;
+    bullets.physicsBodyType = Phaser.Physics.ARCADE;
+
+    bullets.createMultiple(50, 'bullet');
+    bullets.setAll('checkWorldBounds', true);
+    bullets.setAll('outOfBoundsKill', true);
 
     //  The planets group contains the planets (at least two)
     planets = game.add.group();
@@ -92,7 +114,12 @@ function create() {
 };
 
 function update() {
-    //  Collide the player and the stars with the platforms
-    //~ game.physics.arcade.collide(player, platforms);
+	if (!aim) {
+		return;
+	}
+	aim.rotation = game.physics.arcade.angleToPointer(aim);
+	if (game.input.activePointer.isDown) {
+			fire();
+	}
 
 }
