@@ -1,6 +1,7 @@
 // Server config file. Please do not delete
 var express = require('express');
 var socket = require('socket.io');
+var _ = require('underscore');
 var app = express();
 var server = app.listen(8080);
 var io = socket.listen(server);
@@ -11,13 +12,20 @@ app.get('/', function(request, response){
 });
 
 app.use("/", express.static(__dirname));
-
+var clientsCount = 0;
 io.sockets.on('connection', function(socket) {
+  clientsCount ++;
+  var id = clientsCount%2;
+
   socket.on('sign-in', function () {
-    socket.emit('player-id', socket.id);
+    io.sockets.connected[socket.id].emit('player-id', id);
   });
 
   socket.on('shoot', function (bulletObject) {
-    socket.emit('bullet-change', socket.id, bulletObject);
+    socket.emit('bullet-change', id, bulletObject);
+  });
+
+  socket.on('disconnect', function () {
+
   });
 });

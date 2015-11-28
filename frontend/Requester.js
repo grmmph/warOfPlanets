@@ -10,6 +10,7 @@ var Requester = {
     socket.emit('sign-in');
     socket.on('player-id', function (id) {
       that.playerId = id;
+      console.log(id)
       if (callback) {
         callback();
       }
