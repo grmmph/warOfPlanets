@@ -44,6 +44,33 @@ function createPlanet() {
 	}
 };
 
+function rotate_astroids( astroid_group, planet_x, planet_y ) {
+	for (var i = 0, len = astroid_group.children.length; i < len; i++) {
+			if (!astroid_group.children[i].shot) {
+				astroid_group.children[i].pos = astroid_group.children[i].pos + 0.03	;
+				pos_x = Math.floor(Math.cos(astroid_group.children[i].pos) * radius);
+				pos_y = Math.floor(Math.sin(astroid_group.children[i].pos) * radius);
+      
+				astroid_group.children[i].x = planet_x + astroid_perimeter + pos_x;
+				astroid_group.children[i].y = planet_y + pos_y;
+			}
+	}
+}
+
+function init_astroids ( astroid_group, planet_x, planet_y ) {
+	for (var i = 0; i < astroid_init_num*2; i++)
+    {
+        //  Create an random astroid
+        var ranpos = Math.random()*360 << 0;
+        pos_x = Math.floor(Math.cos(ranpos) * radius);
+        pos_y = Math.floor(Math.sin(ranpos) * radius);
+
+        var astroid = astroid_group.create(planet_x + astroid_perimeter + pos_x,planet_y + pos_y, 'astroid');
+        astroid.pos = ranpos;
+        astroid.shot = false;
+    }
+}
+
 function createAim() {
 	aim = game.add.sprite(userPlanet.x + (userPlanet.width/2), userPlanet.y + (userPlanet.height/2), 'aim');
 	aim.anchor.setTo(0.5, 0.5);
@@ -111,20 +138,12 @@ function create() {
 
     //  The astroids group contains the planets (at least two)
     p1_astroids = game.add.group();
+    p2_astroids = game.add.group();
 
 
     var distance_astroids = (2*radius)/astroid_init_num - 8;
-    for (var i = 0; i < astroid_init_num*2; i++)
-    {
-        //  Create an random astroid
-        var ranpos = Math.random()*360 << 0;
-        pos_x = Math.floor(Math.cos(ranpos) * radius);
-        pos_y = Math.floor(Math.sin(ranpos) * radius);
-
-        var astroid = p1_astroids.create(planet1x + astroid_perimeter + pos_x,planet1y + 35 + pos_y, 'astroid');
-        astroid.pos = ranpos;
-        astroid.shot = false;
-    }
+    init_astroids(p1_astroids, planet1x, planet1y + 35);
+    init_astroids(p2_astroids, planet2x, planet2y + 35);
 
 		if (Requester.playerId == 0) {
 			userAstroids = p1_astroids;
@@ -144,16 +163,8 @@ function update() {
 	}
 	
 	// rotate astroids
-	for (var i = 0, len = p1_astroids.children.length; i < len; i++) {
-			if (!p1_astroids.children[i].shot) {
-				p1_astroids.children[i].pos = p1_astroids.children[i].pos + 0.03	;
-				pos_x = Math.floor(Math.cos(p1_astroids.children[i].pos) * radius);
-				pos_y = Math.floor(Math.sin(p1_astroids.children[i].pos) * radius);
-      
-				p1_astroids.children[i].x = planet1x + astroid_perimeter + pos_x;
-				p1_astroids.children[i].y = planet1y + 35 + pos_y;
-			}
-	}
+	rotate_astroids(p1_astroids, planet1x, planet1y + 35);
+	rotate_astroids(p2_astroids, planet2x, planet2y + 35);
 
 	game.physics.arcade.overlap(bullets, userAstroids, onBulletHitAstroid, null, this);
 	game.physics.arcade.overlap(userAstroids, planets, onAstroidHitPlanets, null, this);
