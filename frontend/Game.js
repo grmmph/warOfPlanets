@@ -64,6 +64,7 @@ function fire() {
       nextFire = game.time.now + fireRate;
       var bullet = bullets.getFirstDead();
       bullet.reset(aim.x, aim.y);
+			bullet.alpha = 0;
       game.physics.arcade.moveToPointer(bullet, 300);
 	}
 }
