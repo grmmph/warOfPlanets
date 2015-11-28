@@ -14,7 +14,8 @@ Requester.signIn(function () {
 
 function preload() {
     game.load.image('background', 'assets/background.png');
-    game.load.image('planet', 'assets/planet.png');
+    game.load.image('planet1', 'assets/planet1.png');
+    game.load.image('planet2', 'assets/planet2.png');
     game.load.image('aim', 'assets/aim.png');
     game.load.image('astroid', 'assets/astroid_small.png');
 }
@@ -34,8 +35,8 @@ function create() {
 		console.log(planet1)
     aim1 = game.add.sprite(planet1.x + (planet1.width/2), planet1.y + (planet1.height/2), 'aim');
 		aim1.anchor.setTo(0.5, 0.5);
-    var planet = planets.create(100, 300, 'planet');
-    var planet = planets.create(800, 300, 'planet');
+    var planet1 = planets.create(100, 300, 'planet1');
+    var planet2 = planets.create(800, 300, 'planet2');
 
     //  The astroids group contains the planets (at least two)
     p1_astroids = game.add.group();
