@@ -20,6 +20,8 @@ var aim;
 var fireRate = 100;
 var nextFire = 0;
 var explosions;
+var userAstroids;
+var oppAstroids;
 var score = {
 		you: 0,
 		him: 0
@@ -83,7 +85,7 @@ function init_astroids ( astroid_group, planet_x, planet_y ) {
 	for (var i = 0; i < astroid_init_num*2; i++)
     {
 				astroid_pic = ['astroid1', 'astroid2', 'astroid3', 'astroid4', 'astroid5', 'astroid6'];
-			
+
         //  Create an random astroid
         var ranpos = Math.random()*360 << 0;
         pos_x = Math.floor(Math.cos(ranpos) * radius);
@@ -97,11 +99,11 @@ function init_astroids ( astroid_group, planet_x, planet_y ) {
 
 function add_note_to_astroid(astroid_group) {
 	var astroid_sound = ['astroid_sound1', 'astroid_sound2', 'astroid_sound3', 'astroid_sound4', 'astroid_sound5', 'astroid_sound6', 'astroid_sound7', 'astroid_sound8', 'astroid_sound9', 'astroid_sound10', 'astroid_sound11', 'astroid_sound12']
-	
+
 	for (var i = 0, len = astroid_group.children.length; i < len; i++) {
 		note = game.add.audio(astroid_sound[i]);
 		note.loop = true;
-		note.play();	
+		note.play();
 	}
 }
 
@@ -156,7 +158,6 @@ function onAstroidHitPlanets (astroid, planet) {
 	astroid.kill();
 	score.you ++;
 	document.getElementById('you').innerHTML = score.you;
-
 	var boom = game.add.sprite(astroid.x, astroid.y, 'explosion');
 	var explosion = boom.animations.add('explosion');
 	boom.animations.play('explosion', 30, true);
@@ -171,11 +172,13 @@ Requester.onHitUser = function () {
 	console.log('you got hit!')
 	score.him ++;
 	document.getElementById('him').innerHTML = score.him;
+	oppAstroids.removeChildAt(0);
 	var boom = game.add.sprite(userPlanet.x+30, userPlanet.y, 'explosion');
 	var explosion = boom.animations.add('explosion');
 	boom.animations.play('explosion', 30, true);
 	kaboom = game.add.audio('boom');
 	kaboom.play();
+
 	setTimeout(function () {
 		boom.kill()
 	},300)
@@ -188,7 +191,7 @@ function create() {
 		drone.loop = true;
 		drone.play();
 		drone.onLoop = true;
-		
+
     //  A simple background for our game
     var background = game.add.tileSprite(0, 0, gameSize[0], gameSize[1], "background");
 		createPlanet();
@@ -215,10 +218,12 @@ function create() {
 
 		if (Requester.playerId == 0) {
 			userAstroids = p1_astroids;
+			oppAstroids = p2_astroids;
 		} else {
 			userAstroids = p2_astroids;
+			oppAstroids = p1_astroids;
 		}
-		
+
 		add_note_to_astroid(userAstroids);
 
 };
@@ -231,6 +236,9 @@ function update() {
 	if (game.input.activePointer.isDown) {
 			fire();
 	}
+
+	// planet1.angle += 1;
+	// planet2.angle += 1;
 
 	// rotate astroids
 	rotate_astroids(p1_astroids, planet1x, planet1y + 35);
