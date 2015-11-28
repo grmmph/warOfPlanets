@@ -3,7 +3,7 @@ var express = require('express');
 var socket = require('socket.io');
 var _ = require('underscore');
 var app = express();
-var server = app.listen(8080);
+var server = app.listen(8081);
 var io = socket.listen(server);
 console.log("Serving at port 8080");
 

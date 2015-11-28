@@ -26,11 +26,28 @@ function preload() {
     game.load.image('planet1', 'assets/planet1.png');
     game.load.image('planet2', 'assets/planet2.png');
     game.load.image('aim', 'assets/aim.png');
-    game.load.image('astroid', 'assets/astroid_small.png');
+    game.load.image('astroid1', 'assets/asteroid1.png');
+    game.load.image('astroid2', 'assets/asteroid2.png');
+    game.load.image('astroid3', 'assets/asteroid3.png');
+    game.load.image('astroid4', 'assets/asteroid4.png');
+    game.load.image('astroid5', 'assets/asteroid5.png');
+    game.load.image('astroid6', 'assets/asteroid6.png');
 		game.load.image('bullet', 'assets/bullet.png');
 		game.load.spritesheet('explosion', 'assets/explosion.png', 100, 100);
 		game.load.audio('drone', 'assets/music/DRONE.mp3');
 		game.load.audio('boom', 'assets/music/boom.mp3');
+		game.load.audio('astroid_sound1', 'assets/music/Ad.mp3');
+		game.load.audio('astroid_sound2', 'assets/music/B.mp3');
+		game.load.audio('astroid_sound3', 'assets/music/Cd.mp3');
+		game.load.audio('astroid_sound4', 'assets/music/D2.mp3');
+		game.load.audio('astroid_sound5', 'assets/music/D.mp3');
+		game.load.audio('astroid_sound6', 'assets/music/E2.mp3');
+		game.load.audio('astroid_sound7', 'assets/music/E3.mp3');
+		game.load.audio('astroid_sound8', 'assets/music/E.mp3');
+		game.load.audio('astroid_sound9', 'assets/music/Fd2.mp3');
+		game.load.audio('astroid_sound10', 'assets/music/Fd.mp3');
+		game.load.audio('astroid_sound11', 'assets/music/Gd2.mp3');
+		game.load.audio('astroid_sound12', 'assets/music/Gd.mp3');
 };
 
 function createPlanet() {
@@ -62,15 +79,27 @@ function rotate_astroids( astroid_group, planet_x, planet_y ) {
 function init_astroids ( astroid_group, planet_x, planet_y ) {
 	for (var i = 0; i < astroid_init_num*2; i++)
     {
+				astroid_pic = ['astroid1', 'astroid2', 'astroid3', 'astroid4', 'astroid5', 'astroid6'];
+			
         //  Create an random astroid
         var ranpos = Math.random()*360 << 0;
         pos_x = Math.floor(Math.cos(ranpos) * radius);
         pos_y = Math.floor(Math.sin(ranpos) * radius);
 
-        var astroid = astroid_group.create(planet_x + astroid_perimeter + pos_x,planet_y + pos_y, 'astroid');
+        var astroid = astroid_group.create(planet_x + astroid_perimeter + pos_x,planet_y + pos_y, astroid_pic[Math.floor(i/2)]);
         astroid.pos = ranpos;
         astroid.shot = false;
     }
+}
+
+function add_note_to_astroid(astroid_group) {
+	var astroid_sound = ['astroid_sound1', 'astroid_sound2', 'astroid_sound3', 'astroid_sound4', 'astroid_sound5', 'astroid_sound6', 'astroid_sound7', 'astroid_sound8', 'astroid_sound9', 'astroid_sound10', 'astroid_sound11', 'astroid_sound12']
+	
+	for (var i = 0, len = astroid_group.children.length; i < len; i++) {
+		note = game.add.audio(astroid_sound[i]);
+		note.loop = true;
+		note.play();	
+	}
 }
 
 function createAim() {
@@ -135,7 +164,10 @@ function create() {
     //  We're going to be using physics, so enable the Arcade Physics system
     game.physics.startSystem(Phaser.Physics.ARCADE);
 		drone = game.add.audio('drone');
+		drone.loop = true;
 		drone.play();
+		drone.onLoop = true;
+		
     //  A simple background for our game
     var background = game.add.tileSprite(0, 0, gameSize[0], gameSize[1], "background");
 		createPlanet();
@@ -165,6 +197,8 @@ function create() {
 		} else {
 			userAstroids = p2_astroids;
 		}
+		
+		add_note_to_astroid(userAstroids);
 
 };
 
