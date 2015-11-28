@@ -30,6 +30,7 @@ function preload() {
 		game.load.image('bullet', 'assets/bullet.png');
 		game.load.spritesheet('explosion', 'assets/explosion.png', 100, 100);
 		game.load.audio('drone', 'assets/music/DRONE.mp3');
+		game.load.audio('boom', 'assets/music/boom.mp3');
 };
 
 function createPlanet() {
@@ -119,6 +120,8 @@ function onAstroidHitPlanets (astroid, planet) {
 	var boom = game.add.sprite(astroid.x, astroid.y, 'explosion');
 	var explosion = boom.animations.add('explosion');
 	boom.animations.play('explosion', 30, true);
+	kaboom = game.add.audio('boom');
+	kaboom.play();
 	setTimeout(function () {
 		boom.kill()
 	},300)
@@ -133,7 +136,6 @@ function create() {
     var background = game.add.tileSprite(0, 0, gameSize[0], gameSize[1], "background");
 		createPlanet();
 		createAim();
-
 
 		bullets = game.add.group();
     bullets.enableBody = true;
