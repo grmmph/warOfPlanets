@@ -64,7 +64,7 @@ function fire() {
       nextFire = game.time.now + fireRate;
       var bullet = bullets.getFirstDead();
       bullet.reset(aim.x, aim.y);
-			bullet.alpha = 0;
+			//~ bullet.alpha = 0;
       game.physics.arcade.moveToPointer(bullet, 300);
 	}
 }
@@ -135,6 +135,7 @@ function update() {
 			fire();
 	}
 	
+	// rotate astroids
 	for (var i = 0, len = p1_astroids.children.length; i < len; i++) {
 			if (!p1_astroids.children[i].shot) {
 				p1_astroids.children[i].pos = p1_astroids.children[i].pos + 0.03	;
