@@ -1,4 +1,5 @@
-var game = new Phaser.Game(1000, 800, Phaser.AUTO, '', { preload: preload, create: create, update: update });
+var gameSize = [1000, 800];
+var game = new Phaser.Game(gameSize[0], gameSize[1], Phaser.AUTO, '', { preload: preload, create: create, update: update });
 var playerId;
 Requester.signIn(function () {
 	playerId = Requester.playerId;
@@ -20,7 +21,7 @@ function create() {
     game.physics.startSystem(Phaser.Physics.ARCADE);
 
     //  A simple background for our game
-    game.add.sprite(0, 0, 'background');
+    var background = game.add.tileSprite(0, 0, gameSize[0], gameSize[1], "background");
 
     //  The planets group contains the planets (at least two)
     planets = game.add.group();
