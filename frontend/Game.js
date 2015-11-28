@@ -40,6 +40,9 @@ function createPlanet() {
 function createAim() {
 	aim = game.add.sprite(userPlanet.x + (userPlanet.width/2), userPlanet.y + (userPlanet.height/2), 'aim');
 	aim.anchor.setTo(0.5, 0.5);
+	if (Requester.playerId === 0) {
+		aim.angle = 180;
+	}
 
 	game.input.keyboard.onUpCallback = function( e ) {
 	    if(e.keyCode == Phaser.Keyboard.UP){
