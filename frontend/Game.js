@@ -120,6 +120,7 @@ function onBulletHitAstroid (bullet, astroid) {
 };
 
 function onAstroidHitPlanets (astroid, planet) {
+	Requester.astroidHit();
 	astroid.kill();
 	var boom = game.add.sprite(astroid.x, astroid.y, 'explosion');
 	var explosion = boom.animations.add('explosion');
@@ -130,6 +131,17 @@ function onAstroidHitPlanets (astroid, planet) {
 		boom.kill()
 	},300)
 };
+
+Requester.onHitUser = function () {
+	var boom = game.add.sprite(userPlanet.x+30, userPlanet.y, 'explosion');
+	var explosion = boom.animations.add('explosion');
+	boom.animations.play('explosion', 30, true);
+	kaboom = game.add.audio('boom');
+	kaboom.play();
+	setTimeout(function () {
+		boom.kill()
+	},300)
+}
 
 function create() {
     //  We're going to be using physics, so enable the Arcade Physics system
