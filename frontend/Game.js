@@ -50,7 +50,7 @@ function rotate_astroids( astroid_group, planet_x, planet_y ) {
 				astroid_group.children[i].pos = astroid_group.children[i].pos + 0.03	;
 				pos_x = Math.floor(Math.cos(astroid_group.children[i].pos) * radius);
 				pos_y = Math.floor(Math.sin(astroid_group.children[i].pos) * radius);
-      
+
 				astroid_group.children[i].x = planet_x + astroid_perimeter + pos_x;
 				astroid_group.children[i].y = planet_y + pos_y;
 			}
@@ -105,6 +105,7 @@ function beforeCreate(argument) {
 };
 
 function onBulletHitAstroid (bullet, astroid) {
+	console.log('haha')
 	game.add.tween(astroid).to( { x: 0 }, 3000, "Quart.easeOut").start();
 };
 
@@ -161,11 +162,10 @@ function update() {
 	if (game.input.activePointer.isDown) {
 			fire();
 	}
-	
-	// rotate astroids
-	rotate_astroids(p1_astroids, planet1x, planet1y + 35);
-	rotate_astroids(p2_astroids, planet2x, planet2y + 35);
 
+	// rotate astroids
+	// rotate_astroids(p1_astroids, planet1x, planet1y + 35);
+	// rotate_astroids(p2_astroids, planet2x, planet2y + 35);
 	game.physics.arcade.overlap(bullets, userAstroids, onBulletHitAstroid, null, this);
 	game.physics.arcade.overlap(userAstroids, planets, onAstroidHitPlanets, null, this);
 

@@ -18,11 +18,7 @@ var Requester = {
     socket.on('bullet-change', this.onShoot);
   },
 
-  shoot: function (bulletObject) {
-    socket.on('shoot', bulletObject);
-  },
-
-  onShoot: function (bulletObject) {
-
+  astroidHit: function () {
+    socket.emit('shoot');
   }
 }
